@@ -3,10 +3,21 @@
 
 @section design Design explanation
 
-Describe what you did here.
+This module reads the position of the throttle-pedal, then uses this in
+combination with the current car speed to calculate the desired wheel torque.
 
-There is no need to repeat the description for what it should do that you have
-received again here.
+Class CThrottlePedal - Determine the position of the throttle-pedal:
+- Read the ADC value for each throttle-pedal sensor.
+- Convert each ADC value into a pedal position as a fraction 0.0 .. 1.0.
+- For each sensor calculate the moving average over the latest positions.
+- Use the average of all sensors as the pedal position, value 0.0 .. 1.0.
+In case of problems use pedal position zero, to slow down the car.
+
+Class CMotorTorque - Calculate the desired motor torque:
+- Locate the throttle-pedal position between the nearest reference values
+  and interpolate the reference torque values accordingly.
+- Locate the current car speed between the reference speeds
+  and interpolate/extrapolate the torque from these reference values.
 
 <!-- If you know plantUML and you have it installed (maybe adapt PLANTUML_JAR_PATH
   in Doxyfile if it's not at `/usr/share/plantuml`) then you can use this:
